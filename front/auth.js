@@ -44,6 +44,9 @@ async function signUpUser() {
         email,
         password,
         options: {
+            emailRedirectTo:
+                'https://keishiame.github.io/IA_GP_FP/front/login.html',
+
             data: {
                 first_name: firstName,
                 last_name: lastName,
