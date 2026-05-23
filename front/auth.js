@@ -75,14 +75,17 @@ async function loginUser() {
 async function loginWithGoogle() {
     const { data, error } = await _supabase.auth.signInWithOAuth({
         provider: 'google',
+        options: {
+            redirectTo:
+                'https://keishiame.github.io/IA_GP_FP/front/dashboard.html'
+        }
     })
+
     if (error) {
         alert("Error with Google Login: " + error.message)
-    } else {
-        alert("Login successful!")
-        window.location.href = "./dashboard.html";
     }
 }
+
 async function logout() {
     await _supabase.auth.signOut();
     window.location.href = "./login.html";;
