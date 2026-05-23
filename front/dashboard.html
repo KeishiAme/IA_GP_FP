@@ -67,19 +67,54 @@
   </div>
 
 </body>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<script src="auth.js"></script>
+
 <script>
 
-async function checkUser() {
+document.body.style.display = "none";
 
-    const { data: { session } } =
-    await _supabase.auth.getSession();
+async function protectPage() {
 
-    if (!session) {
-        window.location.href = "login.html";
+    // Get current session
+    const { data: { session }, error } =
+        await _supabase.auth.getSession();
+
+    // No valid login
+    if (!session || error) {
+        window.location.replace("login.html");
+        return;
     }
+
+    // Optional: verify token is still valid
+    const { data: userData, error: userError } =
+        await _supabase.auth.getUser();
+
+    if (userError || !userData.user) {
+        await _supabase.auth.signOut();
+        window.location.replace("login.html");
+        return;
+    }
+
+    // User is authenticated
+    document.body.style.display = "flex";
 }
 
-checkUser();
+// Auto logout if session expires
+_supabase.auth.onAuthStateChange((event, session) => {
+
+    if (
+        event === "SIGNED_OUT" ||
+        event === "TOKEN_REFRESH_FAILED" ||
+        !session
+    ) {
+        window.location.replace("login.html");
+    }
+});
+
+protectPage();
 
 </script>
+  
 </html>
