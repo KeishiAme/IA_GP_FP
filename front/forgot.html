@@ -7,7 +7,6 @@
 <title>Forgot Password</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 <style>
-
 * { box-sizing: border-box; }
 body {font-family: Inter; display:flex; justify-content:center; align-items:center; height:100vh; background:linear-gradient(white,#00D0FF);}
 .card {background:rgba(255,255,255,0.6); padding:30px; border-radius:20px; width:300px; text-align:center;}
@@ -19,8 +18,8 @@ button {background:#00D0FF; color:white; border:none; cursor: pointer;}
   
 <div class="card">
 <h2>Forgot Password</h2>
-<input type="email" placeholder="Enter your email">
-<button>Reset Password</button>
+<input type="email" id="resetEmail" placeholder="Enter your email">
+<button onclick="resetPassword()">Reset Password</button>
 <p><a href="login.html">Back to Login</a></p>
 </div>
 
