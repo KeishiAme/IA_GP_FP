@@ -1,92 +1,57 @@
 const supabaseUrl = 'https://fvpwikjfujmtzyfcdejy.supabase.co'
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ2cHdpa2pmdWptdHp5ZmNkZWp5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0ODYyODgsImV4cCI6MjA5MjA2MjI4OH0.iMwMxw0bidkBeYVylEGnfw8TnTPe38p_pBamDlBHVBI'
-const _supabase = supabase.createClient(supabaseUrl, supabaseKey)
-const VALID_APP_KEY = "CSCN08C-SECURE-2026"
-
-function validateAppKey() {
-    const userEnteredKey = document.getElementById('appKeyInput').value
-    if (userEnteredKey === VALID_APP_KEY) {
-        return true
-    } else {
-        alert("Invalid AppKey! You are not authorized to use this system.")
-        return false
-    }
+    await _supabase.auth.signOut()
+    window.location.href = 'login.html'
 }
 
-function validatePassword(password) {
-    const regex =
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{12,}$/;
+async function resetPassword() {
 
-    return regex.test(password);
-}
+    const email = document.getElementById('resetEmail').value.trim()
 
-async function signUpUser() {
-    if (!validateAppKey()) return; 
-    const email = document.getElementById('signupEmail').value
-    const password = document.getElementById('signupPassword').value
-    
-    if (!email || !password) {
-        alert("Please fill in all fields")
+    if (!email) {
+        alert('Please enter your email.')
         return
     }
-    
-    if (!validatePassword(password)) {
-    document.getElementById("passwordError").innerText =
-    "Password must contain uppercase, lowercase, number, special character, and minimum 12 characters.";
 
-    return;
-    }
-    const { data, error } = await _supabase.auth.signUp({
-        email: email,
-        password: password,
+    const { error } = await _supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: 'https://keishiame.github.io/IA_GP_FP/front/login.html'
     })
 
     if (error) {
-        alert("Error: " + error.message)
+        alert(error.message)
     } else {
-        alert("Success! Check your email for the confirmation link.")
-        console.log("User created:", data)
+        alert('Password reset email sent!')
     }
 }
-let loginAttempts = 0;
 
-async function loginUser() {
-    const email = document.getElementById('loginEmail').value
-    const password = document.getElementById('loginPassword').value
+async function confirmOtp() {
 
-    const { data, error } = await _supabase.auth.signInWithPassword({
-        email: email,
-        password: password,
+    const phone = document.getElementById('otpPhone').value.trim()
+    const token = document.getElementById('otpCode').value.trim()
+
+    const { error } = await _supabase.auth.verifyOtp({
+        phone,
+        token,
+        type: 'sms'
     })
-    loginAttempts++;
 
-    if (loginAttempts > 5) {
-        alert("Too many login attempts.");
-        return;
-    }
     if (error) {
-        alert("Login failed: " + error.message)
+        alert('Invalid OTP: ' + error.message)
+        return
+    }
+
+    alert('Phone verified successfully!')
+    window.location.href = 'login.html'
+}
+
+function togglePassword(inputId, toggleElement) {
+
+    const input = document.getElementById(inputId)
+
+    if (input.type === 'password') {
+        input.type = 'text'
+        toggleElement.innerText = '🙈'
     } else {
-        alert("Login successful!")
-        window.location.href = "https://keishiame.github.io/IA_GP_FP/front/dashboard.html";
+        input.type = 'password'
+        toggleElement.innerText = '👁️'
     }
-}
-
-async function loginWithGoogle() {
-    const { data, error } = await _supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-            redirectTo:
-                'https://keishiame.github.io/IA_GP_FP/front/dashboard.html'
-        }
-    })
-
-    if (error) {
-        alert("Error with Google Login: " + error.message)
-    }
-}
-
-async function logout() {
-    await _supabase.auth.signOut();
-    window.location.href = "https://keishiame.github.io/IA_GP_FP/front/login.html";;
 }
