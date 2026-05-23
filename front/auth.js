@@ -46,7 +46,6 @@ async function signUpUser() {
         options: {
             emailRedirectTo:
                 'https://keishiame.github.io/IA_GP_FP/front/login.html',
-
             data: {
                 first_name: firstName,
                 last_name: lastName,
@@ -67,12 +66,12 @@ const MAX_ATTEMPTS = 5
 const LOCKOUT_MS = 15 * 60 * 1000
 
 function getLockoutData() {
-    const raw = sessionStorage.getItem('loginLockout')
+    const raw = localStorage.getItem('loginLockout')
     return raw ? JSON.parse(raw) : { attempts: 0, lockedUntil: null }
 }
 
 function saveLockoutData(data) {
-    sessionStorage.setItem('loginLockout', JSON.stringify(data))
+    localStorage.setItem('loginLockout', JSON.stringify(data))
 }
 
 function showError(msg) {
@@ -102,6 +101,7 @@ async function loginUser() {
     if (!email) {
         if (typeof setFieldError === 'function') {
             setFieldError('emailError', 'Email is required.')
+        } else {
             document.getElementById('loginEmail').classList.add('error-field')
         }
         valid = false
@@ -110,6 +110,7 @@ async function loginUser() {
     if (!password) {
         if (typeof setFieldError === 'function') {
             setFieldError('passwordError', 'Password is required.')
+        } else {
             document.getElementById('loginPassword').classList.add('error-field')
         }
         valid = false
