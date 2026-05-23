@@ -68,7 +68,7 @@ async function loginUser() {
         alert("Login failed: " + error.message)
     } else {
         alert("Login successful!")
-        window.location.href = "dashboard.html" 
+        window.location.href = "https://keishiame.github.io/IA_GP_FP/front/dashboard.html" 
     }
 }
 
