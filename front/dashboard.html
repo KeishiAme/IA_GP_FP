@@ -1,59 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Dashboard</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
+    #logoutBtn:hover {
+      background: #e03e3e;
     }
 
-    body {
-      font-family: Inter, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-      background: linear-gradient(white, #00D0FF);
-    }
-
-    .card {
-      background: rgba(255, 255, 255, 0.6);
-      padding: 40px 30px;
-      border-radius: 20px;
-      width: 350px;
-      text-align: center;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-    }
-
-    h1 {
+    #userName {
+      font-weight: 600;
       color: #0099cc;
-      margin-bottom: 10px;
-    }
-
-    p {
-      color: #333;
-      margin-bottom: 25px;
-    }
-
-    button {
-      width: 100%;
-      padding: 12px;
-      border-radius: 8px;
-      border: none;
-      background: #00D0FF;
-      color: white;
-      font-size: 16px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    button:hover {
-      background: #00b8e6;
     }
   </style>
 </head>
@@ -61,15 +14,12 @@
 
   <div class="card">
     <h1>Welcome!</h1>
-    <p>You have logged in successfully.</p>
-
-    <button onclick="logout()">Logout</button>
+    <p>Logged in as: <span id="userName">...</span></p>
+    <button onclick="window.location.href='#'">Continue</button>
+    <button id="logoutBtn" onclick="logout()">Log Out</button>
   </div>
 
 </body>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-<script src="auth.js"></script>
 
 <script>
 
@@ -77,17 +27,14 @@ document.body.style.display = "none";
 
 async function protectPage() {
 
-    // Get current session
     const { data: { session }, error } =
         await _supabase.auth.getSession();
 
-    // No valid login
     if (!session || error) {
         window.location.replace("login.html");
         return;
     }
 
-    // Optional: verify token is still valid
     const { data: userData, error: userError } =
         await _supabase.auth.getUser();
 
@@ -97,11 +44,17 @@ async function protectPage() {
         return;
     }
 
-    // User is authenticated
+    const user = userData.user
+    const meta = user.user_metadata
+
+    document.getElementById('userName').textContent =
+      (meta?.first_name && meta?.last_name)
+        ? `${meta.first_name} ${meta.last_name}`
+        : user.email
+
     document.body.style.display = "flex";
 }
 
-// Auto logout if session expires
 _supabase.auth.onAuthStateChange((event, session) => {
 
     if (
@@ -116,5 +69,5 @@ _supabase.auth.onAuthStateChange((event, session) => {
 protectPage();
 
 </script>
-  
+
 </html>
