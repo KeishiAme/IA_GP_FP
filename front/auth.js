@@ -68,7 +68,7 @@ async function loginUser() {
         alert("Login failed: " + error.message)
     } else {
         alert("Login successful!")
-        window.location.replace("dashboard.html");
+        window.location.href = "./dashboard.html";
     }
 }
 
@@ -80,5 +80,5 @@ async function loginWithGoogle() {
 }
 async function logout() {
     await _supabase.auth.signOut();
-    window.location.replace("login.html");
+    window.location.href = "./login.html";;
 }
