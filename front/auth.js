@@ -76,7 +76,12 @@ async function loginWithGoogle() {
     const { data, error } = await _supabase.auth.signInWithOAuth({
         provider: 'google',
     })
-    if (error) alert("Error with Google Login: " + error.message)
+    if (error) {
+        alert("Error with Google Login: " + error.message)
+    } else {
+        alert("Login successful!")
+        window.location.href = "./dashboard.html";
+    }
 }
 async function logout() {
     await _supabase.auth.signOut();
