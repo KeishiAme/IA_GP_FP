@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Sign Up</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="auth.js" defer></script>
+<style>
+* { box-sizing: border-box; }
+body {font-family: Inter; display:flex; justify-content:center; align-items:center; height:100vh; background:linear-gradient(white,#00D0FF);}
+.card {background:rgba(255,255,255,0.6); padding:30px; border-radius:20px; width:320px; text-align:center;}
+input, button {width:100%; padding:12px; margin:8px 0; border-radius:8px; border: 1px solid #ccc;}
+button {background:#00D0FF; color:white; border:none; cursor: pointer;}
+</style>
+</head>
+
+<body>
+<div class="card">
+<h2>Sign Up</h2>
+<input type="text" id="appKeyInput" placeholder="App Key">
+<input type="text" placeholder="First Name">
+<input type="text" placeholder="Last Name">
+<input type="email" id="signupEmail" placeholder="Email">
+<input type="password" id="signupPassword" placeholder="Password">
+<p id="passwordError" style="color:red;font-size:12px;"></p>
+<input type="tel" placeholder="Phone Number">
+<button onclick="signUpUser()">Create Account</button>
+<p>Already have an account? <a href="login.html">Login</a></p>
+</div>
+</body>
+
+</html>
