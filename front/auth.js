@@ -78,4 +78,7 @@ async function loginWithGoogle() {
     })
     if (error) alert("Error with Google Login: " + error.message)
 }
-
+async function logout() {
+    await _supabase.auth.signOut();
+    window.location.replace("login.html");
+}
