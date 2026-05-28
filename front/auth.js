@@ -1,17 +1,6 @@
 const supabaseUrl = 'https://fvpwikjfujmtzyfcdejy.supabase.co'
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ2cHdpa2pmdWptdHp5ZmNkZWp5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0ODYyODgsImV4cCI6MjA5MjA2MjI4OH0.iMwMxw0bidkBeYVylEGnfw8TnTPe38p_pBamDlBHVBI'
 const _supabase = supabase.createClient(supabaseUrl, supabaseKey)
-const VALID_APP_KEY = "CSCN08C-SECURE-2026"
-
-function validateAppKey() {
-    const userEnteredKey = document.getElementById('appKeyInput').value
-    if (userEnteredKey === VALID_APP_KEY) {
-        return true
-    } else {
-        alert("Invalid AppKey! You are not authorized to use this system.")
-        return false
-    }
-}
 
 function validatePassword(password) {
     const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{12,}$/
